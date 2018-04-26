@@ -1,5 +1,6 @@
 from django.conf import settings
 from ebaysdk.trading import Connection as Trading
+from .slackapi import send_notification
 
 API_MAP = dict()
 
@@ -48,7 +49,8 @@ def revise_inventory_status(data):
     sku = data.get('SKU', None)
 
     if item_id and quantity and sku:
-        response = api.execute('ReviseInventoryStatus', {
+
+        ebay_response = api.execute('ReviseInventoryStatus', {
             'InventoryStatus': [
                 {
                     'ItemID': item_id,
@@ -57,4 +59,27 @@ def revise_inventory_status(data):
                 }
             ]
         })
-        return response
+
+        if ebay_response.status_code == 200:
+            response = {
+                'status': 200,
+                'type': 'OK',
+                'message': 'ReviseInventoryStatus Api call',
+            }
+        else:
+            response = {
+                'status': 500,
+                'type': 'ERR',
+                'message': 'ReviseInventoryStatus API not call',
+            }
+            send_notification(str(ebay_response.json()), 'xpressbuyer')
+
+    else:
+        response = {
+            'status': 500,
+            'type': 'ERR',
+            'message': 'ItemID,SKU or QTY not found in ReviseInventoryStatus',
+        }
+        send_notification('ItemID,SKU or QTY not found in ReviseInventoryStatus' + settings.EBAY, 'xpressbuyer')
+
+    return response

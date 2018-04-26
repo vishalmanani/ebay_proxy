@@ -9,6 +9,7 @@ from django.views.decorators.csrf import csrf_exempt
 from ebaysdk.exception import ConnectionError
 from .ebay_api import API_MAP
 from ebaysdk import response as res
+from .slackapi import send_notification
 
 slack_logger = logging.getLogger('django.request')
 
@@ -27,38 +28,31 @@ class EbayAPI(View):
 
             if api_function:
                 response = api_function(data)
-                response_data = {
-                    'status': 200,
-                    'type': 'OK',
-                    'message': api_name + 'api call Successfully',
-                    'ebay': settings.EBAY,
-                    'data': response.dict()
-                }
             else:
-                response_data = {
-                    'status': 201,
+                response = {
+                    'status': 500,
                     'ebay': settings.EBAY,
-                    'message': api_name + ' api not register'
+                    'message': api_name + ' API not register'
                 }
+                send_notification(api_name + ' API not registered in ' + settings.EBAY, 'xpressbuyer')
 
         except ConnectionError as e:
-            slack_logger.error("eBay API ConnectionError: " + settings.EBAY, exc_info=True)
-            response_data = {
-                'status': 501,
+            slack_logger.error("eBay API ConnectionError " + settings.EBAY, exc_info=True)
+            response = {
+                'status': 500,
                 'type': 'ERR',
                 'message': 'ebay api connection error',
                 'ebay': settings.EBAY,
-                'data': e.response.dict()
             }
         except Exception as e:
-            slack_logger.error("Error while call ebay api:" + settings.EBAY, exc_info=True)
-            response_data = {
+            slack_logger.error("Error while call ebay API " + settings.EBAY, exc_info=True)
+            response = {
                 'status': 500,
                 'type': 'ERR',
                 'message': 'Internal Server Error',
                 'ebay': settings.EBAY,
             }
-        return JsonResponse(response_data)
+        return JsonResponse(response)
 
 
 class EbayWebHook(View):
@@ -81,17 +75,18 @@ class EbayWebHook(View):
                 response = {
                     'status': 200,
                     'type': 'OK',
-                    'message': 'Successfully',
+                    'message': 'Successfully Processed Notification',
                 }
             else:
                 response = {
-                    'status': 201,
+                    'status': 500,
                     'type': 'ERR',
-                    'message': 'error',
+                    'message': 'Internal Server Error',
                 }
+                send_notification(str(notification_data) + settings.EBAY, 'xpressbuyer')
 
         except Exception as e:
-            print(e)
+            slack_logger.error("Error while call ebay webhook " + settings.EBAY, exc_info=True)
             response = {
                 'status': 500,
                 'type': 'ERR',
