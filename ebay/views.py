@@ -83,7 +83,6 @@ class EbayWebHook(View):
                     'type': 'ERR',
                     'message': 'Internal Server Error',
                 }
-                send_notification(str(notification_data) + settings.EBAY, 'xpressbuyer')
 
         except Exception as e:
             slack_logger.error("Error while call ebay webhook " + settings.EBAY, exc_info=True)
