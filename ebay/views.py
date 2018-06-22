@@ -69,9 +69,8 @@ class EbayNotification(View):
             data = r.json()
 
             notification_data = requests.post('http://127.0.0.1:8089/webhook/notification/', data=data)
-            notification_data = notification_data.json()
 
-            if notification_data.get('status') == 200:
+            if notification_data.status_code == 200:
                 response = {
                     'status': 200,
                     'type': 'OK',
