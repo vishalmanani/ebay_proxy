@@ -29,53 +29,53 @@ def get_notification_preferences(data):
     return response
 
 
-@register('GetOrders')
-def get_orders(data):
-    response = api.execute('GetOrders', {
-        'OrderIDArray': [
-            {
-                'OrderID': '222037993704-2070296061012'
-            }
-        ]
-    })
-    return response
-
-
-@register('ReviseInventoryStatus')
-def revise_inventory_status(data):
-
-    item = data.get('item')
-    print('=========', item)
-    # item_id = data.get('ItemID', None)
-    # quantity = data.get('Quantity', None)
-    # sku = data.get('SKU', None)
-
-    # if item_id and quantity and sku:
-
-    ebay_response = api.execute('ReviseInventoryStatus', {
-        'InventoryStatus': item
-    })
-
-    if ebay_response.status_code == 200:
-        response = {
-            'status': 200,
-            'type': 'OK',
-            'message': 'ReviseInventoryStatus Api call',
-        }
-    else:
-        response = {
-            'status': 500,
-            'type': 'ERR',
-            'message': 'ReviseInventoryStatus API not call',
-        }
-        send_notification(str(ebay_response.json()), 'xpressbuyer')
-
-    # else:
-    #     response = {
-    #         'status': 500,
-    #         'type': 'ERR',
-    #         'message': 'ItemID,SKU or QTY not found in ReviseInventoryStatus',
-    #     }
-    #     send_notification('ItemID,SKU or QTY not found in ReviseInventoryStatus' + settings.EBAY, 'xpressbuyer')
-
-    return response
+# @register('GetOrders')
+# def get_orders(data):
+#     response = api.execute('GetOrders', {
+#         'OrderIDArray': [
+#             {
+#                 'OrderID': '222037993704-2070296061012'
+#             }
+#         ]
+#     })
+#     return response
+#
+#
+# @register('ReviseInventoryStatus')
+# def revise_inventory_status(data):
+#
+#     item = data.get('item')
+#     print('=========', item)
+#     # item_id = data.get('ItemID', None)
+#     # quantity = data.get('Quantity', None)
+#     # sku = data.get('SKU', None)
+#
+#     # if item_id and quantity and sku:
+#
+#     ebay_response = api.execute('ReviseInventoryStatus', {
+#         'InventoryStatus': item
+#     })
+#
+#     if ebay_response.status_code == 200:
+#         response = {
+#             'status': 200,
+#             'type': 'OK',
+#             'message': 'ReviseInventoryStatus Api call',
+#         }
+#     else:
+#         response = {
+#             'status': 500,
+#             'type': 'ERR',
+#             'message': 'ReviseInventoryStatus API not call',
+#         }
+#         send_notification(str(ebay_response.json()), 'xpressbuyer')
+#
+#     # else:
+#     #     response = {
+#     #         'status': 500,
+#     #         'type': 'ERR',
+#     #         'message': 'ItemID,SKU or QTY not found in ReviseInventoryStatus',
+#     #     }
+#     #     send_notification('ItemID,SKU or QTY not found in ReviseInventoryStatus' + settings.EBAY, 'xpressbuyer')
+#
+#     return response

@@ -55,11 +55,11 @@ class EbayAPI(View):
         return JsonResponse(response)
 
 
-class EbayWebHook(View):
+class EbayNotification(View):
 
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
-        return super(EbayWebHook, self).dispatch(request, *args, **kwargs)
+        return super(EbayNotification, self).dispatch(request, *args, **kwargs)
 
     def post(self, request):
         try:
