@@ -75,7 +75,7 @@ class EbayNotification(View):
             r = res.Response(rdo)
             data = r.json()
 
-            notification_data = requests.post('http://127.0.0.1:8089/webhook/notification/', data=data)
+            notification_data = requests.post('http://xb-dev.us-east-2.elasticbeanstalk.com/webhook/notification/', data=data)
 
             if notification_data.status_code == 200:
                 response = {
