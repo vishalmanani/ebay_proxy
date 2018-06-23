@@ -27,7 +27,14 @@ class EbayAPI(View):
             api_function = API_MAP.get(api_name, None)
 
             if api_function:
-                response = api_function(data)
+                response_data = api_function(data)
+                response = {
+                    'status': 200,
+                    'type': 'OK',
+                    'message': api_name + 'api call Successfully',
+                    'ebay': settings.EBAY,
+                    'data': response_data.dict()
+                }
             else:
                 response = {
                     'status': 500,
