@@ -94,3 +94,18 @@ def get_my_ebay_selling(data):
         }
     })
     return response
+
+
+@register('GetSellerList')
+def get_seller_list(data):
+    page_no = data.get('page_no')
+    response = api.execute('GetSellerList', {
+            'DetailLevel': 'ReturnAll',
+            'EndTimeFrom': '2018-06-30T23:59:59.005Z',
+            'EndTimeTo': '2018-09-30T23:59:59.005Z',
+            'Pagination': {
+                'EntriesPerPage': '200',
+                'PageNumber': page_no,
+            }
+    })
+    return response
