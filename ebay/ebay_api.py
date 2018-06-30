@@ -79,3 +79,18 @@ def get_notification_preferences(data):
 #     #     send_notification('ItemID,SKU or QTY not found in ReviseInventoryStatus' + settings.EBAY, 'xpressbuyer')
 #
 #     return response
+
+
+@register('GetMyeBaySelling')
+def get_my_ebay_selling(data):
+    page_no = data.get('page_no')
+    response = api.execute('GetMyeBaySelling', {
+        'ActiveList': {
+            'Include': 'true',
+            'Pagination': {
+                'EntriesPerPage': '200',
+                'PageNumber': page_no,
+            }
+        }
+    })
+    return response
