@@ -1,6 +1,7 @@
 from django.conf import settings
 from ebaysdk.trading import Connection as Trading
-from .slackapi import send_notification
+from datetime import date
+# from .slackapi import send_notification
 
 API_MAP = dict()
 
@@ -98,12 +99,14 @@ def get_my_ebay_selling(data):
 
 @register('GetSellerList')
 def get_seller_list(data):
+    end_time_from = date.today()
+    end_time_to = date(end_time_from.year, end_time_from.month + 3, end_time_from.day)
     page_no = data.get('page_no')
     response = api.execute('GetSellerList', {
             # 'DetailLevel': 'ReturnAll',
             'GranularityLevel':'Fine',
-            'EndTimeFrom': '2018-06-30T23:59:59.005Z',
-            'EndTimeTo': '2018-09-30T23:59:59.005Z',
+            'EndTimeFrom': str(end_time_from),
+            'EndTimeTo': str(end_time_to),
             'Pagination': {
                 'EntriesPerPage': '2',
                 'PageNumber': page_no,
