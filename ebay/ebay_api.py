@@ -113,7 +113,7 @@ def get_seller_list(data):
 
 
 @register('ReviseItem')
-def get_seller_list(data):
+def revise_item(data):
     response = api.execute('ReviseItem', {
         'Item': {
             'ItemID': data.get('item_id'),
@@ -121,6 +121,15 @@ def get_seller_list(data):
             'StartPrice': data.get('price'),
         }
 
+    })
+    return response
+
+
+@register('EndItem')
+def end_item(data):
+    response = api.execute('EndItem', {
+            'ItemID': data.get('item_id'),
+            'EndingReason': 'NotAvailable',
     })
     return response
 
