@@ -110,3 +110,17 @@ def get_seller_list(data):
             }
     })
     return response
+
+
+@register('ReviseItem')
+def get_seller_list(data):
+    response = api.execute('ReviseItem', {
+        'Item': {
+            'ItemID': data.get('item_id'),
+            'Title': data.get('title'),
+            'StartPrice': data.get('price'),
+        }
+
+    })
+    return response
+
