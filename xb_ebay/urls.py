@@ -15,9 +15,12 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
+from django.conf import settings
+
+ebay_url = r'^' + settings.EBAY + '/'
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^ebay/', include('ebay.urls')),
+    url(ebay_url, include('ebay.urls')),
 
 ]

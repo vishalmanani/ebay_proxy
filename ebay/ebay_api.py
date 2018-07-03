@@ -1,6 +1,7 @@
 from django.conf import settings
 from ebaysdk.trading import Connection as Trading
-from .slackapi import send_notification
+from datetime import date
+# from .slackapi import send_notification
 
 API_MAP = dict()
 
@@ -79,3 +80,59 @@ def get_notification_preferences(data):
 #     #     send_notification('ItemID,SKU or QTY not found in ReviseInventoryStatus' + settings.EBAY, 'xpressbuyer')
 #
 #     return response
+
+
+@register('GetMyeBaySelling')
+def get_my_ebay_selling(data):
+    page_no = data.get('page_no')
+    response = api.execute('GetMyeBaySelling', {
+        'ActiveList': {
+            'Include': 'true',
+            'Pagination': {
+                'EntriesPerPage': '200',
+                'PageNumber': page_no,
+            }
+        }
+    })
+    return response
+
+
+@register('GetSellerList')
+def get_seller_list(data):
+    end_time_from = date.today()
+    end_time_to = date(end_time_from.year, end_time_from.month + 3, end_time_from.day)
+    page_no = data.get('page_no')
+    response = api.execute('GetSellerList', {
+            # 'DetailLevel': 'ReturnAll',
+            'GranularityLevel':'Fine',
+            'EndTimeFrom': str(end_time_from),
+            'EndTimeTo': str(end_time_to),
+            'Pagination': {
+                'EntriesPerPage': '2',
+                'PageNumber': page_no,
+            }
+    })
+    return response
+
+
+@register('ReviseItem')
+def revise_item(data):
+    response = api.execute('ReviseItem', {
+        'Item': {
+            'ItemID': data.get('item_id'),
+            'Title': data.get('title'),
+            'StartPrice': data.get('price'),
+        }
+
+    })
+    return response
+
+
+@register('EndItem')
+def end_item(data):
+    response = api.execute('EndItem', {
+            'ItemID': data.get('item_id'),
+            'EndingReason': 'NotAvailable',
+    })
+    return response
+
