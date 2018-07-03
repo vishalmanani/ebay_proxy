@@ -108,7 +108,7 @@ def get_seller_list(data):
             'EndTimeFrom': str(end_time_from),
             'EndTimeTo': str(end_time_to),
             'Pagination': {
-                'EntriesPerPage': '2',
+                'EntriesPerPage': '200',
                 'PageNumber': page_no,
             }
     })
