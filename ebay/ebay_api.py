@@ -104,7 +104,7 @@ def get_seller_list(data):
     page_no = data.get('page_no')
     response = api.execute('GetSellerList', {
             # 'DetailLevel': 'ReturnAll',
-            'GranularityLevel':'Fine',
+            'GranularityLevel': 'Fine',
             'EndTimeFrom': str(end_time_from),
             'EndTimeTo': str(end_time_to),
             'Pagination': {
@@ -136,3 +136,23 @@ def end_item(data):
     })
     return response
 
+
+@register('SetNotificationPreferences')
+def set_notification_references(data):
+    response = api.execute('SetNotificationPreferences', {
+        'UserDeliveryPreferenceArray': {
+            'NotificationEnable': {
+                'EventType': data.get('event_type'),
+                'EventEnable': data.get('event_enable')
+            }
+        }
+    })
+    return response
+
+
+@register('GetNotificationPreferences')
+def get_notification_references(data):
+    response = api.execute('GetNotificationPreferences', {
+        'PreferenceLevel': 'User',
+    })
+    return response
