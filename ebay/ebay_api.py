@@ -131,8 +131,8 @@ def revise_item(data):
 @register('EndItem')
 def end_item(data):
     response = api.execute('EndItem', {
-            'ItemID': data.get('item_id'),
-            'EndingReason': 'NotAvailable',
+        'ItemID': data.get('item_id'),
+        'EndingReason': 'NotAvailable',
     })
     return response
 
@@ -174,3 +174,9 @@ def get_notification_url(data):
     return response
 
 
+@register('GetItem')
+def get_item(data):
+    response = api.execute('GetItem', {
+        'ItemID': data.get('item_id')
+    })
+    return response
