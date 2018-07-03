@@ -150,9 +150,27 @@ def set_notification_references(data):
     return response
 
 
+@register('SetNotificationURL')
+def set_notification_url(data):
+    response = api.execute('SetNotificationPreferences', {
+        'ApplicationDeliveryPreferences': {
+            'ApplicationURL': data.get('url')
+        }
+    })
+    return response
+
+
 @register('GetNotificationPreferences')
 def get_notification_references(data):
     response = api.execute('GetNotificationPreferences', {
         'PreferenceLevel': 'User',
     })
     return response
+
+
+@register('GetNotificationURL')
+def get_notification_url(data):
+    response = api.execute('GetNotificationPreferences', {})
+    return response
+
+
