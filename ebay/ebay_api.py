@@ -180,3 +180,24 @@ def get_item(data):
         'ItemID': data.get('item_id')
     })
     return response
+
+
+@register('GetSellingManagerSoldListings')
+def get_selling_manager_sold_listings(data):
+    response = api.execute('GetSellingManagerSoldListings', {
+        'Pagination': {
+            'EntriesPerPage': '200',
+            'PageNumber': data.get('page_no'),
+        },
+        'SaleDateRange': {
+            'TimeFrom': "2018-07-04T00:00:00.000Z",
+            'TimeTo': "2018-07-04T12:33:00.000Z",
+        },
+        # 'Search': {
+        #     'SearchType': 'ItemID',
+        #     'SearchValue': '222595638759',
+        # }
+
+    })
+    return response
+
