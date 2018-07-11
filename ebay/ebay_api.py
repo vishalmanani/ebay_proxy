@@ -1,6 +1,6 @@
 from django.conf import settings
 from ebaysdk.trading import Connection as Trading
-from datetime import date
+from datetime import date, datetime
 # from .slackapi import send_notification
 
 API_MAP = dict()
@@ -20,66 +20,6 @@ def register(api_name):
         API_MAP[api_name] = api_function
         return api_function
     return wrapper
-
-
-@register('GetNotificationPreferences')
-def get_notification_preferences(data):
-    response = api.execute('GetNotificationPreferences', {
-        'PreferenceLevel': 'User',
-    })
-    return response
-
-
-# @register('GetOrders')
-# def get_orders(data):
-#     response = api.execute('GetOrders', {
-#         'OrderIDArray': [
-#             {
-#                 'OrderID': '222037993704-2070296061012'
-#             }
-#         ]
-#     })
-#     return response
-#
-#
-# @register('ReviseInventoryStatus')
-# def revise_inventory_status(data):
-#
-#     item = data.get('item')
-#     print('=========', item)
-#     # item_id = data.get('ItemID', None)
-#     # quantity = data.get('Quantity', None)
-#     # sku = data.get('SKU', None)
-#
-#     # if item_id and quantity and sku:
-#
-#     ebay_response = api.execute('ReviseInventoryStatus', {
-#         'InventoryStatus': item
-#     })
-#
-#     if ebay_response.status_code == 200:
-#         response = {
-#             'status': 200,
-#             'type': 'OK',
-#             'message': 'ReviseInventoryStatus Api call',
-#         }
-#     else:
-#         response = {
-#             'status': 500,
-#             'type': 'ERR',
-#             'message': 'ReviseInventoryStatus API not call',
-#         }
-#         send_notification(str(ebay_response.json()), 'xpressbuyer')
-#
-#     # else:
-#     #     response = {
-#     #         'status': 500,
-#     #         'type': 'ERR',
-#     #         'message': 'ItemID,SKU or QTY not found in ReviseInventoryStatus',
-#     #     }
-#     #     send_notification('ItemID,SKU or QTY not found in ReviseInventoryStatus' + settings.EBAY, 'xpressbuyer')
-#
-#     return response
 
 
 @register('GetMyeBaySelling')
@@ -190,8 +130,8 @@ def get_selling_manager_sold_listings(data):
             'PageNumber': data.get('page_no'),
         },
         'SaleDateRange': {
-            'TimeFrom': "2018-07-04T00:00:00.000Z",
-            'TimeTo': "2018-07-04T12:33:00.000Z",
+            'TimeFrom': str(date.today()) + "T00:00:00.000Z",
+            'TimeTo': datetime.now(),
         },
         # 'Search': {
         #     'SearchType': 'ItemID',
