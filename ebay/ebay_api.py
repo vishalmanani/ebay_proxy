@@ -146,11 +146,10 @@ def get_selling_manager_sold_listings(data):
 
 @register('ReviseInventoryStatus')
 def revise_inventory_status(data):
-    revise_item_list = data.get(settings.EBAY)
-    revise_item_list = json.dumps(revise_item_list)
-    response = api.execute('ReviseInventoryStatus', {
-        'InventoryStatus': revise_item_list
-    })
+    revise_item_list = data['revise_item_list'][settings.EBAY]
+    api_dict = dict()
+    api_dict.update({'InventoryStatus': [i for i in revise_item_list]})
+    response = api.execute('ReviseInventoryStatus', api_dict)
     return response
 
 
