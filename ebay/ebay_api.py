@@ -153,3 +153,15 @@ def revise_inventory_status(data):
     })
     return response
 
+
+@register('ReviseItemDescription')
+def revise_item_description(data):
+    response = api.execute('ReviseItem', {
+        'Item': {
+            'ItemID': data.get('item_id'),
+            'Description': data.get('description'),
+        }
+
+    })
+    return response
+
