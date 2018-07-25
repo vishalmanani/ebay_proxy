@@ -1,3 +1,5 @@
+import json
+
 from django.conf import settings
 from ebaysdk.trading import Connection as Trading
 from datetime import date, datetime
@@ -138,6 +140,16 @@ def get_selling_manager_sold_listings(data):
         #     'SearchValue': '222595638759',
         # }
 
+    })
+    return response
+
+
+@register('ReviseInventoryStatus')
+def revise_inventory_status(data):
+    revise_item_list = data.get(settings.EBAY)
+    revise_item_list = json.dumps(revise_item_list)
+    response = api.execute('ReviseInventoryStatus', {
+        'InventoryStatus': revise_item_list
     })
     return response
 
