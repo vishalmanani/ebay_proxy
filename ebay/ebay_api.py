@@ -164,3 +164,22 @@ def revise_item_description(data):
     })
     return response
 
+
+@register('ReviseFixedPriceItem')
+def revise_fixed_price_item(data):
+    revise_item_list = data['revise_item_list'][settings.EBAY]
+    title = data.get('title')
+    ebay_item_id = data.get('ebay_item_id')
+    api_dict = dict()
+    api_dict.update({'Variation': [i for i in revise_item_list]})
+    response = api.execute('ReviseFixedPriceItem', {
+        'Item': {
+            'Title': title,
+            'ItemID': ebay_item_id,
+            'Variations': api_dict,
+        }
+    })
+    return response
+
+
+
