@@ -1,9 +1,10 @@
 import json
-
 from django.conf import settings
 from ebaysdk.trading import Connection as Trading
 from datetime import date, datetime
 # from .slackapi import send_notification
+from .wordpress import update_for_revise, update_for_inventory_status
+
 
 API_MAP = dict()
 
@@ -67,6 +68,8 @@ def revise_item(data):
         }
 
     })
+
+    update_for_revise(ebay_id=data.get('item_id'), title=data.get('title'), price=data.get('price'))
     return response
 
 
@@ -150,6 +153,7 @@ def revise_inventory_status(data):
     api_dict = dict()
     api_dict.update({'InventoryStatus': [i for i in revise_item_list]})
     response = api.execute('ReviseInventoryStatus', api_dict)
+    update_for_inventory_status(revise_item_list)
     return response
 
 
@@ -180,6 +184,3 @@ def revise_fixed_price_item(data):
         }
     })
     return response
-
-
-
