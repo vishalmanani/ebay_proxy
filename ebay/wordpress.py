@@ -35,6 +35,16 @@ def update_for_inventory_status(revise_item_list):
     db.close()
 
 
+def delete_for_end_listing(ebay_id):
+    db = MySQLdb.connect(**db_args)
+    cur = db.cursor()
+    sql = "DELETE from ebay20_ebay_auctions WHERE ebay_id ='{ebay_id}'".format(ebay_id=ebay_id)
+    cur.execute(sql)
+    db.commit()
+    db.close()
+
+
 if __name__ == '__main__':
     update_for_revise('223075084073', 'Waterproof Android Smart Watch M26 Anti-lost Pedometer Men Woman Bluetooth V4.2', '150.00')
     update_for_inventory_status([{'ItemID': '223075084073', 'StartPrice': '152.00'}])
+    delete_for_end_listing('223075084073')
