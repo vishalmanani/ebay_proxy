@@ -3,7 +3,7 @@ from django.conf import settings
 from ebaysdk.trading import Connection as Trading
 from datetime import date, datetime
 # from .slackapi import send_notification
-from .wordpress import update_for_revise, update_for_inventory_status
+from .wordpress import update_for_revise, update_for_inventory_status, delete_for_end_listing
 
 
 API_MAP = dict()
@@ -79,6 +79,7 @@ def end_item(data):
         'ItemID': data.get('item_id'),
         'EndingReason': 'NotAvailable',
     })
+    delete_for_end_listing(data.get('item_id'))
     return response
 
 
