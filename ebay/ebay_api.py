@@ -65,8 +65,8 @@ def revise_item(data):
             'ItemID': data.get('item_id'),
             'Title': data.get('title'),
             'StartPrice': data.get('price'),
+            'Quantity': data.get('quantity')
         }
-
     })
 
     update_for_revise(ebay_id=data.get('item_id'), title=data.get('title'), price=data.get('price'))
@@ -96,6 +96,7 @@ def set_notification_references(data):
     return response
 
 
+# set notification URL:"url":"https://xb-jeenal.herokuapp.com/ebay21/notification/"
 @register('SetNotificationURL')
 def set_notification_url(data):
     response = api.execute('SetNotificationPreferences', {
