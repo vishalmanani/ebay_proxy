@@ -69,7 +69,7 @@ def revise_item(data):
         }
     })
 
-    update_for_revise(ebay_id=data.get('item_id'), title=data.get('title'), price=data.get('price'))
+    update_for_revise(ebay_id=data.get('item_id'), title=data.get('title'), price=data.get('price'), quantity=data.get('quantity'))
     return response
 
 
