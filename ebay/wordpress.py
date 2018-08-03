@@ -11,13 +11,14 @@ db_args = {
 }
 
 
-def update_for_revise(ebay_id, title, price):
+def update_for_revise(ebay_id, title, price, quantity):
     db = MySQLdb.connect(**db_args)
     cur = db.cursor()
     sql = "UPDATE ebay20_ebay_auctions " \
           "SET auction_title = '{title}'," \
-          "price = '{price}' " \
-          "WHERE  ebay_id ='{ebay_id}'".format(title=title, price=price, ebay_id=ebay_id)
+          "price = '{price}'," \
+          "quantity = '{quantity}'" \
+          "WHERE  ebay_id ='{ebay_id}'".format(title=title, price=price, ebay_id=ebay_id, quantity=quantity)
     cur.execute(sql)
     db.commit()
     db.close()
