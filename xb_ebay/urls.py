@@ -20,7 +20,7 @@ from django.conf import settings
 ebay_url = r'^' + settings.EBAY + '/'
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
+    # url(r'^admin/', admin.site.urls),
     url(ebay_url, include('ebay.urls')),
 
 ]
