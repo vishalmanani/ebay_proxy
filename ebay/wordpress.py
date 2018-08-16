@@ -6,7 +6,7 @@ db_args = {
     'db': settings.EBAY,
     'user': 'root',
     'passwd': 'gu60pzr24365',
-    'host': settings.WORDPRESS_HOST
+    'host': 'localhost'
 }
 
 
