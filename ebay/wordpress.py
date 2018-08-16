@@ -3,7 +3,7 @@ from django.conf import settings
 
 
 db_args = {
-    'db': settings.EBAY,
+    'db': settings.WORDPRESS_DB,
     'user': 'root',
     'passwd': 'gu60pzr24365',
     'host': 'localhost'
@@ -17,7 +17,7 @@ def update_for_revise(ebay_id, title, price, quantity):
           "SET auction_title = '{title}'," \
           "price = '{price}'," \
           "quantity = '{quantity}'" \
-          "WHERE  ebay_id ='{ebay_id}'".format(db=settings.EBAY, title=title, price=price, ebay_id=ebay_id, quantity=quantity)
+          "WHERE  ebay_id ='{ebay_id}'".format(db=settings.WORDPRESS_DB, title=title, price=price, ebay_id=ebay_id, quantity=quantity)
     cur.execute(sql)
     db.commit()
     db.close()
@@ -44,7 +44,7 @@ def update_for_inventory_status(revise_item_list):
           {when_stmt}  \
           ELSE price \
           END  \
-          WHERE  ebay_id in {ebay_id_list}".format(db=settings.EBAY, when_stmt=when_stmt, ebay_id_list=ebay_id_list)
+          WHERE  ebay_id in {ebay_id_list}".format(db=settings.WORDPRESS_DB, when_stmt=when_stmt, ebay_id_list=ebay_id_list)
     cur.execute(sql)
     db.commit()
     db.close()
@@ -53,7 +53,7 @@ def update_for_inventory_status(revise_item_list):
 def delete_for_end_listing(ebay_id):
     db = MySQLdb.connect(**db_args)
     cur = db.cursor()
-    sql = "DELETE from {db}_ebay_auctions WHERE ebay_id ='{ebay_id}'".format(db=settings.EBAY, ebay_id=ebay_id)
+    sql = "DELETE from {db}_ebay_auctions WHERE ebay_id ='{ebay_id}'".format(db=settings.WORDPRESS_DB, ebay_id=ebay_id)
     cur.execute(sql)
     db.commit()
     db.close()
