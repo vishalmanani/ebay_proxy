@@ -20,6 +20,7 @@ ENVIRON_VARIABLES = [
     'DEV_ID',
     'CERT_ID',
     'EBAY',
+    'WORDPRESS_HOST',
 
 ]
 for env in ENVIRON_VARIABLES:

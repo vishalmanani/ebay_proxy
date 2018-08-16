@@ -3,22 +3,21 @@ from django.conf import settings
 
 
 db_args = {
-    # 'db': settings.EBAY,
-    'db': 'ebay20',
+    'db': settings.EBAY,
     'user': 'root',
     'passwd': 'gu60pzr24365',
-    'host': '52.211.97.99'
+    'host': settings.WORDPRESS_HOST
 }
 
 
 def update_for_revise(ebay_id, title, price, quantity):
     db = MySQLdb.connect(**db_args)
     cur = db.cursor()
-    sql = "UPDATE ebay20_ebay_auctions " \
+    sql = "UPDATE {db}_ebay_auctions " \
           "SET auction_title = '{title}'," \
           "price = '{price}'," \
           "quantity = '{quantity}'" \
-          "WHERE  ebay_id ='{ebay_id}'".format(title=title, price=price, ebay_id=ebay_id, quantity=quantity)
+          "WHERE  ebay_id ='{ebay_id}'".format(db=settings.EBAY, title=title, price=price, ebay_id=ebay_id, quantity=quantity)
     cur.execute(sql)
     db.commit()
     db.close()
@@ -40,12 +39,12 @@ def update_for_inventory_status(revise_item_list):
     db = MySQLdb.connect(**db_args)
     cur = db.cursor()
 
-    sql = "UPDATE ebay20_ebay_auctions \
+    sql = "UPDATE {db}_ebay_auctions \
           SET  price = CASE \
           {when_stmt}  \
           ELSE price \
           END  \
-          WHERE  ebay_id in {ebay_id_list}".format(when_stmt=when_stmt, ebay_id_list=ebay_id_list)
+          WHERE  ebay_id in {ebay_id_list}".format(db=settings.EBAY, when_stmt=when_stmt, ebay_id_list=ebay_id_list)
     cur.execute(sql)
     db.commit()
     db.close()
@@ -54,7 +53,7 @@ def update_for_inventory_status(revise_item_list):
 def delete_for_end_listing(ebay_id):
     db = MySQLdb.connect(**db_args)
     cur = db.cursor()
-    sql = "DELETE from ebay20_ebay_auctions WHERE ebay_id ='{ebay_id}'".format(ebay_id=ebay_id)
+    sql = "DELETE from {db}_ebay_auctions WHERE ebay_id ='{ebay_id}'".format(db=settings.EBAY, ebay_id=ebay_id)
     cur.execute(sql)
     db.commit()
     db.close()
