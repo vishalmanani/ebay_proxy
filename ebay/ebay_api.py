@@ -1,7 +1,7 @@
 import json
 from django.conf import settings
 from ebaysdk.trading import Connection as Trading
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 # from .slackapi import send_notification
 from .wordpress import update_for_revise, update_for_inventory_status, delete_for_end_listing
 
@@ -138,7 +138,7 @@ def get_selling_manager_sold_listings(data):
         },
         'SaleDateRange': {
             'TimeFrom': str(date.today()) + "T00:00:00.000Z",
-            'TimeTo': datetime.now(),
+            'TimeTo': datetime.now() - timedelta(minutes=15),
         },
         # 'Search': {
         #     'SearchType': 'ItemID',
