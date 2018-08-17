@@ -28,13 +28,23 @@ class EbayAPI(View):
 
             if api_function:
                 response_data = api_function(data)
-                response = {
-                    'status': 200,
-                    'type': 'OK',
-                    'message': api_name + 'api call Successfully',
-                    'ebay': settings.EBAY,
-                    'data': response_data.dict()
-                }
+                if response_data.status_code == 200:
+                    response = {
+                        'status': 200,
+                        'type': 'OK',
+                        'message': api_name + 'api call Successfully',
+                        'ebay': settings.EBAY,
+                        'data': response_data.dict()
+                    }
+                else:
+                    response = {
+                        'status': 500,
+                        'type': 'ERR',
+                        'message': api_name + 'api call Failure',
+                        'ebay': settings.EBAY,
+                        'data': response_data.dict()
+                    }
+                    send_notification(api_name + ' api call Failure ' + settings.EBAY, 'xpressbuyer')
             else:
                 response = {
                     'status': 500,
@@ -59,7 +69,7 @@ class EbayAPI(View):
                 'message': 'Internal Server Error',
                 'ebay': settings.EBAY,
             }
-        return JsonResponse(response)
+        return JsonResponse(response, status=response.get('status'))
 
 
 class EbayNotification(View):
