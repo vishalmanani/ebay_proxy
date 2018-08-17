@@ -138,7 +138,7 @@ def get_selling_manager_sold_listings(data):
         },
         'SaleDateRange': {
             'TimeFrom': str(date.today()) + "T00:00:00.000Z",
-            'TimeTo': datetime.now() - timedelta(minutes=15),
+            'TimeTo': datetime.now() - timedelta(minutes=1),
         },
         # 'Search': {
         #     'SearchType': 'ItemID',
